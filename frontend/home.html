@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span id="welcomeMessage">Welcome, <span id="username"></span></span>
+            <button id="logoutButton">Logout</button>
+        </div>
+        <h2>Welcome to the Dockerized Go CRUD App</h2>
+        <h3><span id="userRole"></span> Page</h3>
+        <button id="loadUsers">Load All Users</button>
+        <div class="table-container">
+            <table id="userTable" class="user-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Update User Modal -->
+    <div id="updateModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" id="closeUpdateModal">&times;</span>
+            <h3>Update User</h3>
+            <label for="updateUsername">Username:</label>
+            <input type="text" id="updateUsername" placeholder="New Username" required>
+            <label for="updateEmail">Email:</label>
+            <input type="email" id="updateEmail" placeholder="New Email" required>
+            <label for="updateRole">Role:</label>
+            <select id="updateRole">
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+                <option value="Moderator">Moderator</option>
+            </select>
+            <button id="updateUserButton">Update User</button>
+        </div>
+    </div>
+
+    <!-- Delete User Modal -->
+    <div id="deleteModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" id="closeDeleteModal">&times;</span>
+            <h3>Delete User</h3>
+            <p>Are you sure you want to delete this user?</p>
+            <button id="deleteUserButton">Confirm Delete</button>
+        </div>
+    </div>
+
+    <script src="home.js"></script>
+</body>
+</html>

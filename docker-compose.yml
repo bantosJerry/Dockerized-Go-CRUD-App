@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db_go_crud_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: go_crud_db
+    ports:
+      - "5433:5432" 
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "user", "-d", "go_crud_db"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s        
+
+  app:
+    build: .
+    container_name: go_crud_app
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: go_crud_db
+      DB_PORT: 5432
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+    command: ["./app"]
+
+  test:
+    build:
+      context: .
+      target: test 
+    container_name: go_crud_test
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: go_crud_db
+      DB_PORT: 5432
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+    command: ["go", "test", "./...", "-v"]
+
+volumes:
+  db_data: {}
+
+networks:
+  app_network:
+    driver: bridge
